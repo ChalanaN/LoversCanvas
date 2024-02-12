@@ -1,3 +1,4 @@
+import User from "./User.js";
 import { particleEmitters } from "./canvas.js";
 import { COLORS, ParticleEmitter } from "./utils.js";
 
@@ -21,3 +22,12 @@ window.addEventListener("mousedown", () => (mouse.emitting = true))
 window.addEventListener("mouseup", () => (mouse.emitting = false))
 
 particleEmitters.push(mouse)
+
+export const Me = {
+    id: undefined,
+    connected: false,
+    gender: "male",
+    interestedIn: "female"
+};
+
+export const Users: { [id: string]: User } = {}

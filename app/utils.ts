@@ -62,3 +62,44 @@ export const COLORS = {
 function rgb(r: number, g: number, b: number): RGBColor {
     return [r, g, b]
 }
+
+/**
+ * Error descriptions 🙊
+ */
+export const ERRORS = {
+    ERROR_GETTING_USER_MEDIA: "Error getting camera and microphone access 😭",
+    ERROR_DISCONNECTED: "You are disconnected 😕"
+}
+
+/**
+ * @type {RTCConfiguration}
+ */
+export const peerConnectionOptions = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun3.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:turn2.l.google.com" },
+        {
+            urls: 'turn:numb.viagenie.ca',
+            credential: 'muazkh',
+            username: 'webrtc@live.com'
+        }
+    ],
+    certificates: [] as RTCCertificate[]
+};
+(async () => peerConnectionOptions.certificates.push(await RTCPeerConnection.generateCertificate({ name: "ECDSA" })))();
+
+export const apiDomain = "localhost:3000"
+
+export function error(err: string, time = 10000) {
+    console.error(err);
+    // @ts-ignore
+    document.querySelector("#error").textContent = err;
+    document.querySelector(".error")?.classList.add("show");
+    setTimeout(() => {
+        document.querySelector(".error")?.classList.remove("show");
+    }, time);
+}

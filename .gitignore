@@ -1,3 +1,5 @@
 app/*.js
+*.js
 .vscode
 node_modules/
+.env

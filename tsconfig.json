@@ -1,0 +1,14 @@
+{
+    "include": [ "./app" ],
+    "exclude": [ "node_modules", "./*.ts"],
+    "compilerOptions": {
+        "rootDir": "app/",
+        "outDir": "app/",
+        "target": "ES6",
+        "module": "ES2020",
+        "lib": [ "DOM", "ES2021" ],
+        "inlineSourceMap": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true
+    }
+}

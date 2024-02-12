@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-pink: #FF78C4;
+    --color-purple: #E1AEFF;
+    --color-light-pink: #FFBDF7;
+    --color-lighter-pink: #ffdafb;
+    --color-cream: #FFECEC;
+}
+
+body {
+    display: flex;
+    background-color: var(--color-cream);
+    background: linear-gradient(45deg, var(--color-lighter-pink) 0%, var(--color-cream) 100%);
+}

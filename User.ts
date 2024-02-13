@@ -27,7 +27,7 @@ export default class User {
      * @param {any} value Value of the message
      * @param {number} [by] UID of the user who send the message
      */
-    send(type: "system" | "system-reply" | "signaling", content: string, value: any) {
-        this.socket.send(JSON.stringify({ type, content, value }))
+    send(type: "system" | "system-reply" | "signaling", content: string, value: any, by?: string) {
+        this.socket.send(JSON.stringify({ type, content, value, by }))
     }
 }

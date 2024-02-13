@@ -2,8 +2,9 @@ export type gender = ["male", "female", "other"]
 
 export type WSMessage = {
     type: "signaling",
-    content: "offer" | "answer" | "candidate",
+    content: "offer" | "answer" | "icecandidate",
     to: string,
+    by: string,
     value: any
 } | {
     type: "system",

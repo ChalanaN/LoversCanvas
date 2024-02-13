@@ -55,7 +55,7 @@ wss.on("connection", (socket) => {
     
     socket.on("message", d => {
         let data: WSMessage = JSON.parse(d.toString());
-        
+
         if (data.type == "system" && data.content == "register") {
             user = new User(uuid(), socket)
             WaitingRoom.push(user)
@@ -71,7 +71,7 @@ wss.on("connection", (socket) => {
                     }
                     break;
                 case "signaling":
-                    WaitingRoom.find(u => u.id == data.to)?.send("signaling", data.content, data.value);
+                    WaitingRoom.find(u => u.id == data.to)?.send("signaling", data.content, data.value, user.id);
                     break;
             }
         }

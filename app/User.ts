@@ -11,7 +11,8 @@ export default class User {
     signalingChannel: RTCDataChannel;
     negotiating: boolean;
     connected: boolean;
-    signaling: { send: (type: "mediastatuschange", value: any, additional: object) => void }
+    signaling: { send: (type: "mouse", value: ParticleEmitter, additional?: object) => void }
+    particleEmitter: ParticleEmitter
 
     /**
      * Creates a new User and updates the UI ✨
@@ -33,7 +34,7 @@ export default class User {
              * @param {*} value Massage
              * @param {object} additional Additional parameters
              */
-            send: (type: "mediastatuschange", value: any, additional: object) => this.signalingChannel && this.signalingChannel.send(JSON.stringify({ type, value, ...additional }))
+            send: (type: "mouse", value: ParticleEmitter, additional?: object) => this.signalingChannel && this.signalingChannel.send(JSON.stringify({ type, value, ...additional }))
         }
 
         this.connection.addEventListener("icecandidate", e => e.candidate && socket.send("signaling", "icecandidate", e.candidate, this.id));

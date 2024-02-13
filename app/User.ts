@@ -35,7 +35,7 @@ export default class User {
              * @param {*} value Massage
              * @param {object} additional Additional parameters
              */
-            send: (type: "mouse", value: ParticleEmitter, additional?: object) => this.signalingChannel && this.signalingChannel.send(JSON.stringify({ type, value, ...additional }))
+            send: (type: "mouse", value: ParticleEmitter, additional?: object) => this.signalingChannel?.readyState == "open" && this.signalingChannel.send(JSON.stringify({ type, value, ...additional }))
         }
         this.particleEmitter = {
             x: 0,

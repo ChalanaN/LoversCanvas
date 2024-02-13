@@ -9,7 +9,7 @@
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
+    "license": "CC-BY-NC-SA-4.0",
     "devDependencies": {
         "@types/node": "^20.11.17",
         "@types/uuid": "^9.0.8",

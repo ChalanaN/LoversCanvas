@@ -46,6 +46,7 @@ const server = http.createServer((req, res) => {
     if (req.method == "GET") return sendFile(requestURL.pathname == "/" ? "./app/index.html" : (("./app" + req.url)));
 });
 
+// @ts-ignore
 server.listen(port, "127.0.0.1", () => {
     console.log("👍");
 });
@@ -79,6 +80,7 @@ wss.on("connection", (socket) => {
                     }
                     break;
                 case "signaling":
+                    // @ts-ignore
                     WaitingRoom.find(u => u.id == data.to)?.send("signaling", data.content, data.value, user.id);
                     break;
             }

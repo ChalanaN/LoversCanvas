@@ -63,14 +63,16 @@ wss.on("connection", (socket) => {
         let data: WSMessage = JSON.parse(d.toString());
 
         if (data.type == "system" && data.content == "register") {
-            user = new User(uuid(), socket)
+            user = new User(uuid(), data.value, socket)
             WaitingRoom.push(user)
             user.send("system", "id", user.id)
             console.log(`${user.id} joined waiting room`);
             
             let partner = WaitingRoom.find(u => u.id != user.id)
-            partner?.send("system", "partner", { id: user.id, sendOffer: true })
-            partner && user.send("system", "partner", { id: partner?.id, sendOffer: false })
+            if (!partner) return
+            let optimalScreenSize = Math.sign((user.screenSize.width + user.screenSize.height) - (partner.screenSize.width + partner.screenSize.height)) == 1 ? partner.screenSize : user.screenSize
+            partner.send("system", "partner", { id: user.id, screenSize: optimalScreenSize, sendOffer: true })
+            user.send("system", "partner", { id: partner?.id, screenSize: optimalScreenSize, sendOffer: false })
         } else if (user) {
             data.content != "ping" && console.log(data);
             switch (data.type) {

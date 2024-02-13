@@ -1,10 +1,14 @@
 import { AnyPtrRecord } from "dns"
 import type WebSocket from "ws"
+import { gender } from "./types"
 
 export default class User {
     id: any
     socket: WebSocket
     available: boolean
+    gender: gender
+    interestedIn: gender
+    screenSize: { width: number, height: number }
 
     /**
      * Creates a new user for a room 🤠
@@ -14,8 +18,11 @@ export default class User {
      * @param {WebSocket} [socket] WebSocket connection of the user
      * @param {Room} room Room of the user
      */
-    constructor(id: string, socket: WebSocket) {
+    constructor(id: string, details: { gender: gender, interestedIn: gender, screenSize: { width: number, height: number } }, socket: WebSocket) {
         this.id = id
+        this.gender = details.gender
+        this.interestedIn = details.interestedIn
+        this.screenSize = details.screenSize
         this.socket = socket
         this.available = true
     }

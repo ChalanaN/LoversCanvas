@@ -11,7 +11,11 @@ export type WSMessage = {
     content: "register",
     value: {
         gender: gender,
-        interestedIn: gender
+        interestedIn: gender,
+        screenSize: {
+            width: number,
+            height: number
+        }
     }
 } | {
     type: "system",
@@ -22,6 +26,10 @@ export type WSMessage = {
     content: "partner",
     value: {
         id: string,
+        screenSize: {
+            width: number,
+            height: number
+        },
         sendOffer: boolean
     }
 } | {

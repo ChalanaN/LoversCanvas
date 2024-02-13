@@ -8,6 +8,7 @@ import { particleEmitters } from "./canvas.js";
  */
 export default class User {
     id: string;
+    screenSize: { width: number, height: number };
     connection: RTCPeerConnection;
     signalingChannel: RTCDataChannel;
     negotiating: boolean;
@@ -21,8 +22,10 @@ export default class User {
      * @param {string} name Name of the user
      * @param {boolean} sendOffer Specify whether to send an offer to the user
      */
-    constructor(id: string, sendOffer: boolean) {
+    constructor(id: string, screenSize: { width: number, height: number }, sendOffer: boolean) {
         this.id = id;
+        this.screenSize = screenSize;
+        // @ts-ignore
         this.connection = new RTCPeerConnection(peerConnectionOptions);
         // @ts-ignore
         this.signalingChannel = sendOffer ? this.connection.createDataChannel("SignalingChannel") : undefined;

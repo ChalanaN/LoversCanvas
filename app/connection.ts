@@ -24,7 +24,7 @@ export function connect() {
 
     connection.addEventListener("open", () => {
         console.log("🔌👍");
-        send("system", "register", { gender: Me.gender, interestedIn: Me.interestedIn });
+        send("system", "register", { gender: Me.gender, interestedIn: Me.interestedIn, screenSize: { width: window.innerWidth, height: window.innerHeight } });
         send("system", "ping", "ping");
     });
     connection.addEventListener("close", () => {
@@ -42,7 +42,7 @@ export function connect() {
                         break;
                     case "partner":
                         console.log("Found a partner!", data)
-                        Users[0] = new User(data.value.id, data.value.sendOffer);
+                        Users[0] = new User(data.value.id, data.value.screenSize, data.value.sendOffer);
                         break;
                     case "pong": setTimeout(() => send("system", "ping", "ping"), 3000);break;
                 }

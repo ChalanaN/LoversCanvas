@@ -1,6 +1,7 @@
-import { peerConnectionOptions } from "./utils.js"
+import { COLORS, ParticleEmitter, peerConnectionOptions } from "./utils.js"
 import * as socket from "./connection.js"
 import { Users } from "./index.js";
+import { particleEmitters } from "./canvas.js";
 
 /**
  * User in a room 🙍‍♀️🙍‍♂️
@@ -36,6 +37,18 @@ export default class User {
              */
             send: (type: "mouse", value: ParticleEmitter, additional?: object) => this.signalingChannel && this.signalingChannel.send(JSON.stringify({ type, value, ...additional }))
         }
+        this.particleEmitter = {
+            x: 0,
+            y: 0,
+            emitting: false,
+            color: COLORS.pink,
+            maxParticleSize: 1,
+            particlesForATick: 20,
+            maxParticleSpeedX: 5,
+            maxParticleSpeedY: 5,
+            maxWidth: 20
+        }
+        particleEmitters.push(this.particleEmitter)
 
         this.connection.addEventListener("icecandidate", e => e.candidate && socket.send("signaling", "icecandidate", e.candidate, this.id));
         this.connection.addEventListener("connectionstatechange", e => {
@@ -68,9 +81,20 @@ export default class User {
             this.signalingChannel.addEventListener("message", e => {
                 let data = JSON.parse(e.data);
                 switch (data.type) {
-                    case "mediastatuschange":
-                        // !data.value.video && this.stream.getVideoTracks().forEach(t => this.stream.removeTrack(t));
+                    case "mouse":
+                        // console.log(data.value.emitting && data.value)
+                        this.particleEmitter.color = data.value.color;
+                        this.particleEmitter.emitting = data.value.emitting;
+                        this.particleEmitter.maxParticleSize = data.value.maxParticleSize;
+                        this.particleEmitter.maxParticleSpeedX = data.value.maxParticleSpeedX;
+                        this.particleEmitter.maxParticleSpeedY = data.value.maxParticleSpeedY;
+                        this.particleEmitter.maxWidth = data.value.maxWidth;
+                        this.particleEmitter.particlesForATick = data.value.particlesForATick;
+                        this.particleEmitter.x = data.value.x;
+                        this.particleEmitter.y = data.value.y;
                         break;
+                    default:
+                        console.log(data)
                 }
             })
         }

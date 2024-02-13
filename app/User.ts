@@ -20,7 +20,7 @@ export default class User {
      * @param {string} name Name of the user
      * @param {boolean} sendOffer Specify whether to send an offer to the user
      */
-    constructor(id: string, name: string, sendOffer: boolean) {
+    constructor(id: string, sendOffer: boolean) {
         this.id = id;
         this.connection = new RTCPeerConnection(peerConnectionOptions);
         // @ts-ignore
@@ -40,9 +40,11 @@ export default class User {
         this.connection.addEventListener("icecandidate", e => e.candidate && socket.send("signaling", "icecandidate", e.candidate, this.id));
         this.connection.addEventListener("connectionstatechange", e => {
             // @ts-ignore
-            !this.connected && e.target.iceConnectionState == "connected" && (this.connected = true) && console.log(`Connected with ${this.name} 🤝`) && this.connection.addEventListener("negotiationneeded", createAndSendOffer);
+            !this.connected && e.target.iceConnectionState == "connected" && (this.connected = true) && console.log(`Connected with ${this.id} 🤝`) && this.connection.addEventListener("negotiationneeded", createAndSendOffer);
             // @ts-ignore
-            console.log(`⚡ ${this.name}'s connection changed to ${e.target.iceConnectionState} ⚡`);
+            console.log(`⚡ ${this.id}'s connection changed to ${e.target.iceConnectionState} ⚡`);
+            // @ts-ignore
+            if (e.target.iceConnectionState == "disconnected") this.remove();
         });
         this.connection.addEventListener("signalingstatechange", () => this.negotiating = this.connection.signalingState != "stable");
 
@@ -61,11 +63,10 @@ export default class User {
 
         // Signaling Channel 📩
         let signalingChannelOpened = () => {
-            this.signalingChannel.addEventListener("open", () => console.log(`Data channel opened for ${name}`));
-            this.signalingChannel.addEventListener("close", () => console.log(`Data channel closed from ${name}`));
+            this.signalingChannel.addEventListener("open", () => console.log(`Data channel opened for ${this.id}`));
+            this.signalingChannel.addEventListener("close", () => console.log(`Data channel closed from ${this.id}`));
             this.signalingChannel.addEventListener("message", e => {
                 let data = JSON.parse(e.data);
-                console.log(data)
                 switch (data.type) {
                     case "mediastatuschange":
                         // !data.value.video && this.stream.getVideoTracks().forEach(t => this.stream.removeTrack(t));

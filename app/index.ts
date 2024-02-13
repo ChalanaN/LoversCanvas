@@ -24,7 +24,7 @@ window.addEventListener("mouseup", () => (mouse.emitting = false))
 particleEmitters.push(mouse)
 
 export const Me = {
-    id: undefined,
+    id: "",
     connected: false,
     gender: "male",
     interestedIn: "female"

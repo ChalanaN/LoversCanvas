@@ -60,8 +60,8 @@ wss.on("connection", (socket) => {
             user = new User(uuid(), socket)
             WaitingRoom.push(user)
             user.send("system", "id", user.id)
-            console.log(`${user} joined waiting room`);
-
+            console.log(`${user.id} joined waiting room`);
+            
             WaitingRoom.find(u => u.id != user.id)
         } else if (user) {
             switch (data.type) {

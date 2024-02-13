@@ -90,7 +90,8 @@ export const peerConnectionOptions = {
     ],
     certificates: [] as RTCCertificate[]
 };
-(async () => peerConnectionOptions.certificates.push(await RTCPeerConnection.generateCertificate({ name: "ECDSA" })))();
+// @ts-ignore
+(async () => peerConnectionOptions.certificates.push(await RTCPeerConnection.generateCertificate({ name: "ECDSA", namedCurve: "P-256" })))();
 
 export const apiDomain = "localhost:3000"
 

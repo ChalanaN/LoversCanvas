@@ -48,12 +48,6 @@ export function connect() {
                     case "pong": setTimeout(() => send("system", "ping", "ping"), 3000);break;
                 }
                 break;
-            case "to-all":
-                switch (data.content) {
-                    case "message":
-                        console.log(`${data.value} - ${data.by.name}`);
-                }
-                break;
             case "signaling":
                 switch (data.content) {
                     case "offer":
@@ -74,8 +68,6 @@ export function connect() {
                         break;
                 }
                 break;
-            default:
-                console.log(data, ` > ${data.type}`);
         }
     });
 }

@@ -1,6 +1,7 @@
 import { Me, Users } from "./index.js"
 import User from "./User.js"
 import { apiDomain, error, ERRORS } from "./utils.js"
+import type { WSMessage } from "../types"
 
 /**
  * WebSocket connection of the user 🔌⚡
@@ -19,11 +20,11 @@ export let connection: WebSocket;
 export const send = (type: "system" | "signaling" | "to-all", content: "name" | "offer" | "answer" | "message" | string, value: any, to?: string) => connection instanceof WebSocket && connection.send ? connection.send(JSON.stringify({ type, content, value, to })) : connect() || send(type, content, value, to);
 
 export function connect() {
-    connection = new WebSocket(`wss://${apiDomain}/`);
+    connection = new WebSocket(`ws://${apiDomain}/`);
 
     connection.addEventListener("open", () => {
         console.log("🔌👍");
-        send("system", "basic", { gender: Me.gender, interestedIn: Me.interestedIn });
+        send("system", "register", { gender: Me.gender, interestedIn: Me.interestedIn });
         send("system", "ping", "ping");
     });
     connection.addEventListener("close", () => {
@@ -31,19 +32,17 @@ export function connect() {
         error(ERRORS.ERROR_DISCONNECTED)
     });
     connection.addEventListener("message", e => {
-        let data = JSON.parse(e.data);
+        let data: WSMessage = JSON.parse(e.data);
 
         switch (data.type) {
             case "system":
                 switch (data.content) {
-                    case "basic":
-                        Me.id = data.value.uid;
+                    case "id":
+                        Me.id = data.value;
                         break;
-                    case "user-enter":
-                        Users[data.by] = new User(data.value.id, data.value.name, true);
-                        break;
-                    case "user-leave":
-                        Users[data.by].remove();
+                    case "partner":
+                        console.log("Found a partner!", data)
+                        Users[0] = new User(data.value.id, data.value.sendOffer);
                         break;
                     case "pong": setTimeout(() => send("system", "ping", "ping"), 3000);break;
                 }
@@ -52,19 +51,20 @@ export function connect() {
                 switch (data.content) {
                     case "offer":
                         console.log(data);
-                        Users[data.by] && (async () => {
-                            Users[data.by].connection.setRemoteDescription(new RTCSessionDescription(data.value));
-                            let answer = await Users[data.by].connection.createAnswer();
-                            await Users[data.by].connection.setLocalDescription(answer);
+                        if (Users[0].id != data.by) return
+                        Users[0] && (async () => {
+                            Users[0].connection.setRemoteDescription(new RTCSessionDescription(data.value));
+                            let answer = await Users[0].connection.createAnswer();
+                            await Users[0].connection.setLocalDescription(answer);
                             send("signaling", "answer", answer, data.by);
                         })();
                         break;
                     case "answer":
                         console.log(data);
-                        Users[data.by] && (async () => await Users[data.by].connection.setRemoteDescription(new RTCSessionDescription(data.value)))();
+                        Users[0] && (async () => await Users[0].connection.setRemoteDescription(new RTCSessionDescription(data.value)))();
                         break;
                     case "icecandidate":
-                        Users[data.by] && Users[data.by].connection.addIceCandidate(data.value);
+                        Users[0] && Users[0].connection.addIceCandidate(data.value);
                         break;
                 }
                 break;

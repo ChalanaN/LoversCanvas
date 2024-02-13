@@ -88,6 +88,7 @@ export default class User {
     remove() {
         console.log(`🙋‍♂️ ${this.id} left 🙋‍♂️`);
         this.connection.close();
-        delete Users[this.id];
+        particleEmitters.splice(particleEmitters.indexOf(this.particleEmitter), 1)
+        Users.shift();
     }
 }

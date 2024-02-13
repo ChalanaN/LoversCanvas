@@ -62,8 +62,11 @@ wss.on("connection", (socket) => {
             user.send("system", "id", user.id)
             console.log(`${user.id} joined waiting room`);
             
-            WaitingRoom.find(u => u.id != user.id)
+            let partner = WaitingRoom.find(u => u.id != user.id)
+            partner?.send("system", "partner", { id: user.id, sendOffer: true })
+            partner && user.send("system", "partner", { id: partner?.id, sendOffer: false })
         } else if (user) {
+            data.content != "ping" && console.log(data);
             switch (data.type) {
                 case "system":
                     switch (data.content) {

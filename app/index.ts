@@ -1,6 +1,7 @@
 import User from "./User.js";
 import { particleEmitters } from "./canvas.js";
 import { COLORS, ParticleEmitter } from "./utils.js";
+import * as socket from "./connection.js";
 
 const mouse: ParticleEmitter = {
     x: 0,
@@ -30,4 +31,12 @@ export const Me = {
     interestedIn: "female"
 };
 
-export const Users: { [id: string]: User } = {}
+export const Users: User[] = []
+
+socket.connect();
+
+function updateMousePosition() {
+    Users[0]?.signaling.send("mouse", mouse)
+    requestAnimationFrame(updateMousePosition)
+}
+requestAnimationFrame(updateMousePosition)

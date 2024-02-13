@@ -53,7 +53,12 @@ export default class User {
         this.connection.addEventListener("icecandidate", e => e.candidate && socket.send("signaling", "icecandidate", e.candidate, this.id));
         this.connection.addEventListener("connectionstatechange", e => {
             // @ts-ignore
-            !this.connected && e.target.iceConnectionState == "connected" && (this.connected = true) && console.log(`Connected with ${this.id} 🤝`) && this.connection.addEventListener("negotiationneeded", createAndSendOffer);
+            if (!this.connected && e.target.iceConnectionState == "connected") {
+                this.connected = true
+                console.log(`Connected with ${this.id} 🤝`)
+                this.connection.addEventListener("negotiationneeded", createAndSendOffer);
+                socket.connection.close()
+            }
             // @ts-ignore
             console.log(`⚡ ${this.id}'s connection changed to ${e.target.iceConnectionState} ⚡`);
             // @ts-ignore

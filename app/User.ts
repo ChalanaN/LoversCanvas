@@ -115,9 +115,11 @@ export default class User {
      * Removes the user
      */
     remove() {
-        console.log(`🙋‍♂️ ${this.id} left 🙋‍♂️`);
         this.connection.close();
         particleEmitters.splice(particleEmitters.indexOf(this.particleEmitter), 1)
-        Users.shift();
+        if (Users[0].id != this.id) return
+        console.log(`🙋‍♂️ ${this.id} left 🙋‍♂️`);
+        Users[0].id == this.id && Users.shift();
+        socket.connect()
     }
 }

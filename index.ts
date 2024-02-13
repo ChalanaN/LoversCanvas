@@ -29,7 +29,12 @@ const server = http.createServer((req, res) => {
     const sendFile = async (path: import("fs").PathLike, options?: { statusCode?: number; }) => {
         res.statusCode = options?.statusCode || 200;
         res.setHeader("Content-Type", getContentType(path)!);
-        res.end(await fs.readFile(path));
+        try {
+            res.end(await fs.readFile(path));
+        } catch (e) {
+            res.statusCode = 404;
+            res.end();
+        }
     }
 
     // CORS 🔒

@@ -19,8 +19,18 @@ window.addEventListener("mousemove", (e) => {
     mouse.x = e.x
     mouse.y = e.y
 });
+window.addEventListener("touchmove", (e) => {
+    mouse.x = e.touches[0].clientX
+    mouse.y = e.touches[0].clientY
+});
 window.addEventListener("mousedown", () => (mouse.emitting = true))
+window.addEventListener("touchstart", (e) => {
+    mouse.x = e.touches[0].clientX
+    mouse.y = e.touches[0].clientY
+    mouse.emitting = true
+})
 window.addEventListener("mouseup", () => (mouse.emitting = false))
+window.addEventListener("touchend", () => (mouse.emitting = false))
 
 particleEmitters.push(mouse)
 

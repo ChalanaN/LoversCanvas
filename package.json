@@ -1,14 +1,29 @@
 {
     "name": "lovers-canvas",
     "version": "1.0.0",
-    "description": "",
+    "description": "A place where lovers draw their future together",
     "main": "index.js",
+    "engines": {
+        "node": ">=20.0.0"
+    },
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node index.js",
+        "build": "tsc && tsc -p tsconfig.server.json"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "lovers",
+        "canvas",
+        "drawing",
+        "drawings",
+        "valentine",
+        "romance"
+    ],
+    "author": "ChalanaN",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ChalanaN/LoversCanvas.git"
+    },
     "license": "CC-BY-NC-SA-4.0",
     "devDependencies": {
         "@types/node": "^20.11.17",

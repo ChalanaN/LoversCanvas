@@ -1,5 +1,5 @@
 import User from "./User.js";
-import { particleEmitters } from "./canvas.js";
+import { canvasOffsets, particleEmitters } from "./canvas.js";
 import { COLORS, ParticleEmitter } from "./utils.js";
 import * as socket from "./connection.js";
 
@@ -16,17 +16,17 @@ const mouse: ParticleEmitter = {
 }
 
 window.addEventListener("mousemove", (e) => {
-    mouse.x = e.x
-    mouse.y = e.y
+    mouse.x = e.x - canvasOffsets.left
+    mouse.y = e.y - canvasOffsets.top
 });
 window.addEventListener("touchmove", (e) => {
-    mouse.x = e.touches[0].clientX
-    mouse.y = e.touches[0].clientY
+    mouse.x = e.touches[0].clientX - canvasOffsets.left
+    mouse.y = e.touches[0].clientY - canvasOffsets.top
 });
 window.addEventListener("mousedown", () => (mouse.emitting = true))
 window.addEventListener("touchstart", (e) => {
-    mouse.x = e.touches[0].clientX
-    mouse.y = e.touches[0].clientY
+    mouse.x = e.touches[0].clientX - canvasOffsets.left
+    mouse.y = e.touches[0].clientY - canvasOffsets.top
     mouse.emitting = true
 })
 window.addEventListener("mouseup", () => (mouse.emitting = false))

@@ -1,3 +1,5 @@
+const WINDOW_MARGIN = 32
+
 export type RGBColor = [number, number, number]
 
 export interface Particle {
@@ -108,17 +110,20 @@ export function error(err: string, time = 10000) {
 export function calculateScreenSize(screenSize: { width: number, height: number }) {
     const { width, height } = screenSize;
     const ratio = width / height;
+    const canvasMaxWidth = width == window.innerWidth ? window.innerWidth : (window.innerWidth - WINDOW_MARGIN*2);
+    const canvasMaxHeight = height == window.innerHeight ? window.innerHeight : (window.innerHeight - WINDOW_MARGIN*2);
+
     if (ratio <= 1) {
         return {
-            height: window.innerHeight,
-            width: window.innerHeight * ratio,
-            resizeFactor: window.innerHeight / height
+            height: canvasMaxHeight,
+            width: canvasMaxHeight * ratio,
+            resizeFactor: canvasMaxHeight / height
         }
     } else {
         return {
-            width: window.innerWidth,
-            height: window.innerWidth / ratio,
-            resizeFactor: window.innerWidth / width
+            width: canvasMaxWidth,
+            height: canvasMaxWidth / ratio,
+            resizeFactor: canvasMaxWidth / width
         }
     }
 }

@@ -6,14 +6,24 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-// window.addEventListener("resize", () => {
-//     canvas.height = window.innerHeight;
-//     canvas.width = window.innerWidth;
-// });
+export const canvasOffsets = {
+    top: canvas.offsetTop,
+    left: canvas.offsetLeft
+}
+
+window.addEventListener("resize", () => {
+    canvasOffsets.top = canvas.offsetTop;
+    canvasOffsets.left = canvas.offsetLeft;
+});
 
 export function resizeCanvas({ width, height }: { width: number, height: number }) {
     canvas.height = Math.min(height, window.innerHeight);
     canvas.width = Math.min(width, window.innerWidth);
+    canvasOffsets.top = canvas.offsetTop;
+    canvasOffsets.left = canvas.offsetLeft;
+    if (canvasOffsets.top == 0 && canvasOffsets.left == 0) {
+        canvas.parentElement?.classList.add("full-size")
+    }
 }
 
 export const particleEmitters: ParticleEmitter[] = []

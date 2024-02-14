@@ -67,8 +67,8 @@ wss.on("connection", (socket) => {
             WaitingRoom.push(user)
             user.send("system", "id", user.id)
             console.log(`${user.id} joined waiting room`);
-            
-            let partner = WaitingRoom.find(u => u.id != user.id)
+
+            let partner = WaitingRoom.find(u => u.id != user.id && u.gender == user.interestedIn && u.interestedIn == user.gender)
             if (!partner) return
             let optimalScreenSize = Math.sign((user.screenSize.width + user.screenSize.height) - (partner.screenSize.width + partner.screenSize.height)) == 1 ? partner.screenSize : user.screenSize
             partner.send("system", "partner", { id: user.id, screenSize: optimalScreenSize, sendOffer: true })

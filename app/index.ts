@@ -46,7 +46,11 @@ export const Users: User[] = []
 socket.connect();
 
 function updateMousePosition() {
-    Users[0]?.signaling.send("mouse", mouse)
+    Users[0]?.signaling.send("mouse", {
+        ...mouse,
+        x: mouse.x / Users[0].resizeFactor,
+        y: mouse.y / Users[0].resizeFactor
+    })
     requestAnimationFrame(updateMousePosition)
 }
 requestAnimationFrame(updateMousePosition)

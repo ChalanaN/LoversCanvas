@@ -9,6 +9,7 @@ import { particleEmitters } from "./canvas.js";
 export default class User {
     id: string;
     screenSize: { width: number, height: number };
+    resizeFactor: number;
     connection: RTCPeerConnection;
     signalingChannel: RTCDataChannel;
     negotiating: boolean;
@@ -22,9 +23,10 @@ export default class User {
      * @param {string} name Name of the user
      * @param {boolean} sendOffer Specify whether to send an offer to the user
      */
-    constructor(id: string, screenSize: { width: number, height: number }, sendOffer: boolean) {
+    constructor(id: string, screenSize: { width: number, height: number },  resizeFactor: number, sendOffer: boolean) {
         this.id = id;
         this.screenSize = screenSize;
+        this.resizeFactor = resizeFactor;
         // @ts-ignore
         this.connection = new RTCPeerConnection(peerConnectionOptions);
         // @ts-ignore
@@ -98,8 +100,8 @@ export default class User {
                         this.particleEmitter.maxParticleSpeedY = data.value.maxParticleSpeedY;
                         this.particleEmitter.maxWidth = data.value.maxWidth;
                         this.particleEmitter.particlesForATick = data.value.particlesForATick;
-                        this.particleEmitter.x = data.value.x;
-                        this.particleEmitter.y = data.value.y;
+                        this.particleEmitter.x = data.value.x * this.resizeFactor;
+                        this.particleEmitter.y = data.value.y * this.resizeFactor;
                         break;
                     default:
                         console.log(data)

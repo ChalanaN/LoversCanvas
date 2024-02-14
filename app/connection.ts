@@ -1,7 +1,8 @@
 import { Me, Users } from "./index.js"
 import User from "./User.js"
-import { apiDomain, error, ERRORS } from "./utils.js"
+import { apiDomain, calculateScreenSize, error, ERRORS } from "./utils.js"
 import type { WSMessage } from "../types"
+import { resizeCanvas } from "./canvas.js";
 
 /**
  * WebSocket connection of the user 🔌⚡
@@ -42,7 +43,9 @@ export function connect() {
                         break;
                     case "partner":
                         console.log("Found a partner!", data)
-                        Users[0] = new User(data.value.id, data.value.screenSize, data.value.sendOffer);
+                        let screenSize = calculateScreenSize(data.value.screenSize)
+                        Users[0] = new User(data.value.id, data.value.screenSize, screenSize.resizeFactor, data.value.sendOffer);
+                        resizeCanvas(screenSize)
                         break;
                     case "pong": setTimeout(() => send("system", "ping", "ping"), 3000);break;
                 }

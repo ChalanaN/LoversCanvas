@@ -104,3 +104,21 @@ export function error(err: string, time = 10000) {
         document.querySelector(".error")?.classList.remove("show");
     }, time);
 }
+
+export function calculateScreenSize(screenSize: { width: number, height: number }) {
+    const { width, height } = screenSize;
+    const ratio = width / height;
+    if (ratio <= 1) {
+        return {
+            height: window.innerHeight,
+            width: window.innerHeight * ratio,
+            resizeFactor: window.innerHeight / height
+        }
+    } else {
+        return {
+            width: window.innerWidth,
+            height: window.innerWidth / ratio,
+            resizeFactor: window.innerWidth / width
+        }
+    }
+}

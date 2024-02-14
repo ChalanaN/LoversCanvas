@@ -11,6 +11,11 @@ window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
 });
 
+export function resizeCanvas({ width, height }: { width: number, height: number }) {
+    canvas.height = height;
+    canvas.width = width;
+}
+
 export const particleEmitters: ParticleEmitter[] = []
 
 const particles: Particle[] = []

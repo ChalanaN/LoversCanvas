@@ -6,10 +6,10 @@ const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-window.addEventListener("resize", () => {
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-});
+// window.addEventListener("resize", () => {
+//     canvas.height = window.innerHeight;
+//     canvas.width = window.innerWidth;
+// });
 
 export function resizeCanvas({ width, height }: { width: number, height: number }) {
     canvas.height = Math.min(height, window.innerHeight);

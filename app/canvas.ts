@@ -12,8 +12,8 @@ window.addEventListener("resize", () => {
 });
 
 export function resizeCanvas({ width, height }: { width: number, height: number }) {
-    canvas.height = height;
-    canvas.width = width;
+    canvas.height = Math.min(height, window.innerHeight);
+    canvas.width = Math.min(width, window.innerWidth);
 }
 
 export const particleEmitters: ParticleEmitter[] = []

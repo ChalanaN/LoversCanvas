@@ -1,4 +1,3 @@
-import { AnyPtrRecord } from "dns"
 import type WebSocket from "ws"
 import { gender } from "./types"
 

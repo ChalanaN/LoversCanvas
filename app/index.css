@@ -88,3 +88,11 @@ body {
 }
 .errors .error .close-icon::before { transform: rotate(-45deg) }
 .errors .error .close-icon::after { transform: rotate(45deg); }
+
+canvas#bgFx {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: -1;
+}

@@ -3,6 +3,7 @@ import User from "./User.js"
 import { apiDomain, calculateScreenSize, error, ERRORS } from "./utils.js"
 import type { WSMessage } from "../types"
 import { resizeCanvas } from "./canvas.js";
+import { stopEffect } from "./bgFx.js";
 
 /**
  * WebSocket connection of the user 🔌⚡
@@ -22,6 +23,7 @@ export const send = (type: "system" | "signaling" | "to-all", content: "name" | 
 
 export function connect() {
     let infoMessage = error("Looking for a partner 👀", undefined, ["info"])
+    stopEffect()
     connection = new WebSocket(`ws://${apiDomain}/`);
 
     connection.addEventListener("open", () => {

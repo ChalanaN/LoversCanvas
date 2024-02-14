@@ -3,6 +3,7 @@ import * as socket from "./connection.js"
 import { Users } from "./index.js";
 import { particleEmitters } from "./canvas.js";
 import { error } from "./utils.js";
+import { startEffect } from "./bgFx.js";
 
 /**
  * User in a room 🙍‍♀️🙍‍♂️
@@ -65,6 +66,7 @@ export default class User {
                 this.connected = true
                 console.log(`Connected with ${this.id} 🤝`)
                 error("Connected with a partner 💌", 2000, ["info"])
+                startEffect()
                 this.connection.addEventListener("negotiationneeded", createAndSendOffer);
                 socket.connection.close()
             }

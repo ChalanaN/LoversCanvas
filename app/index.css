@@ -96,3 +96,24 @@ canvas#bgFx {
     pointer-events: none;
     z-index: -1;
 }
+
+.info-collector {
+    position: fixed;
+    background: var(--color-pink);
+    color: var(--color-lighter-pink);
+    padding: 2rem;
+    border-radius: 2rem;
+}
+.info-collector .inputs {
+    margin: 1rem 0;
+}
+.info-collector button {
+    cursor: pointer;
+    background: var(--color-lighter-pink);
+    border: none;
+    padding: 0.5em 1em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: var(--color-pink);
+    border-radius: 0.8em;
+}

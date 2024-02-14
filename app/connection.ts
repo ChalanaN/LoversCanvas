@@ -22,6 +22,7 @@ export let connection: WebSocket;
 export const send = (type: "system" | "signaling" | "to-all", content: "name" | "offer" | "answer" | "message" | string, value: any, to?: string) => connection instanceof WebSocket && connection.send ? connection.send(JSON.stringify({ type, content, value, to })) : connect() || send(type, content, value, to);
 
 export function connect() {
+    document.querySelector(".info-collector")?.remove()
     let infoMessage = error("Looking for a partner 👀", undefined, ["info"])
     stopEffect()
     connection = new WebSocket(`ws://${apiDomain}/`);

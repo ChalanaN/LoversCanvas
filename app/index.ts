@@ -37,13 +37,25 @@ particleEmitters.push(mouse)
 export const Me = {
     id: "",
     connected: false,
-    gender: "male",
-    interestedIn: "female"
+    gender: "",
+    interestedIn: ""
 };
 
 export const Users: User[] = []
 
-socket.connect();
+if (localStorage.getItem("gender") && localStorage.getItem("interestedIn")) {
+    Me.gender = localStorage.getItem("gender") as string
+    Me.interestedIn = localStorage.getItem("interestedIn") as string
+    socket.connect()
+}
+
+document.querySelector("#connect")?.addEventListener("click", () => {
+    Me.gender = (document.querySelector("#gender") as HTMLInputElement).value.toLowerCase()
+    Me.interestedIn = (document.querySelector("#interestedIn") as HTMLInputElement).value.toLowerCase()
+    localStorage.setItem("gender", Me.gender)
+    localStorage.setItem("interestedIn", Me.interestedIn)
+    socket.connect()
+})
 
 function updateMousePosition() {
     Users[0]?.signaling.send("mouse", {

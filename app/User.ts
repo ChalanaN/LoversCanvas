@@ -2,6 +2,7 @@ import { COLORS, ParticleEmitter, peerConnectionOptions } from "./utils.js"
 import * as socket from "./connection.js"
 import { Users } from "./index.js";
 import { particleEmitters } from "./canvas.js";
+import { error } from "./utils.js";
 
 /**
  * User in a room 🙍‍♀️🙍‍♂️
@@ -58,16 +59,17 @@ export default class User {
         this.connection.addEventListener("icecandidate", e => e.candidate && socket.send("signaling", "icecandidate", e.candidate, this.id));
         this.connection.addEventListener("connectionstatechange", e => {
             // @ts-ignore
+            if (e.target.iceConnectionState == "disconnected") this.remove();
+            // @ts-ignore
             if (!this.connected && e.target.iceConnectionState == "connected") {
                 this.connected = true
                 console.log(`Connected with ${this.id} 🤝`)
+                error("Connected with a partner 💌", 2000, ["info"])
                 this.connection.addEventListener("negotiationneeded", createAndSendOffer);
                 socket.connection.close()
             }
             // @ts-ignore
             console.log(`⚡ ${this.id}'s connection changed to ${e.target.iceConnectionState} ⚡`);
-            // @ts-ignore
-            if (e.target.iceConnectionState == "disconnected") this.remove();
         });
         this.connection.addEventListener("signalingstatechange", () => this.negotiating = this.connection.signalingState != "stable");
 
@@ -124,6 +126,7 @@ export default class User {
         particleEmitters.splice(particleEmitters.indexOf(this.particleEmitter), 1)
         if (Users[0].id != this.id) return
         console.log(`🙋‍♂️ ${this.id} left 🙋‍♂️`);
+        error("Disconnected 🥺", 2000)
         Users[0].id == this.id && Users.shift();
         socket.connect()
     }

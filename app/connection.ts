@@ -21,6 +21,7 @@ export let connection: WebSocket;
 export const send = (type: "system" | "signaling" | "to-all", content: "name" | "offer" | "answer" | "message" | string, value: any, to?: string) => connection instanceof WebSocket && connection.send ? connection.send(JSON.stringify({ type, content, value, to })) : connect() || send(type, content, value, to);
 
 export function connect() {
+    let infoMessage = error("Looking for a partner 👀", undefined, ["info"])
     connection = new WebSocket(`ws://${apiDomain}/`);
 
     connection.addEventListener("open", () => {
@@ -30,7 +31,6 @@ export function connect() {
     });
     connection.addEventListener("close", () => {
         console.log("🔌👎");
-        error(ERRORS.ERROR_DISCONNECTED)
     });
     connection.addEventListener("message", e => {
         let data: WSMessage = JSON.parse(e.data);
@@ -43,6 +43,7 @@ export function connect() {
                         break;
                     case "partner":
                         console.log("Found a partner!", data)
+                        infoMessage.element.remove()
                         let screenSize = calculateScreenSize(data.value.screenSize)
                         Users[0] = new User(data.value.id, data.value.screenSize, screenSize.resizeFactor, data.value.sendOffer);
                         resizeCanvas(screenSize)

@@ -97,14 +97,24 @@ export const peerConnectionOptions = {
 
 export const apiDomain = "localhost:3000"
 
-export function error(err: string, time = 10000) {
-    console.error(err);
-    // @ts-ignore
-    document.querySelector("#error").textContent = err;
-    document.querySelector(".error")?.classList.add("show");
-    setTimeout(() => {
-        document.querySelector(".error")?.classList.remove("show");
-    }, time);
+/**
+ * 
+ * @param {string} err Message to be displayed
+ * @param {number} [t] Timeout. Error will hide after the timeout
+ * @param {string[]} [classes] Classes to add to the `.error` element
+ * @returns {{timeout:number,element:HTMLDivElement}}
+ */
+export const error = (err: string, t?: number, classes: string[] = []): { timeout?: number; element: HTMLDivElement } => {
+    let errorElem = document.createElement("div")
+    errorElem.classList.add("error")
+    classes.forEach(c => errorElem.classList.add(c))
+    errorElem.innerHTML = `<span>${err}</span><span class="close-icon" onclick="this.parentElement.remove()"></span>`
+    document.querySelector(".errors")?.appendChild(errorElem)
+    !classes && console.error(err)
+    return {
+        timeout: t ? (setTimeout(() => errorElem.remove(), t) as unknown) as number : undefined,
+        element: errorElem
+    }
 }
 
 export function calculateScreenSize(screenSize: { width: number, height: number }) {

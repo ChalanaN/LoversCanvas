@@ -1,7 +1,7 @@
 {
     "name": "lovers-canvas",
     "version": "1.0.0",
-    "description": "A place where lovers draw their future together",
+    "description": "A place where strangers draw their future together",
     "main": "index.js",
     "engines": {
         "node": ">=20.0.0"
